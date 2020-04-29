@@ -1,0 +1,56 @@
+version: '3.6'
+
+services:
+    master:
+        build: ./master
+        container_name: cluster-master
+        env_file:
+            - ./mysql.env
+        environment:
+            WAIT_HOSTS: cluster-db:3306
+        ports:
+            - '7180:7180'
+            - '7183:7183'
+            - '7187:7187'
+        networks:
+            - intranet
+        restart: always
+        depends_on:
+            - db
+    db:
+        image: mysql:5.7
+        container_name: cluster-db
+        env_file:
+            - ./mysql.env
+        volumes:
+            - ./db/config:/etc/mysql/conf.d:ro
+            - ./db/script:/docker-entrypoint-initdb.d:ro
+        networks:
+            - intranet
+        restart: always
+        command: ["mysqld"]
+>>>>
+    worker-@i:
+        build: ./worker
+        container_name: cluster-worker-@i
+        hostname: cluster-worker-@i
+        networks:
+            - intranet 
+        environment:
+            WAIT_HOSTS: cluster-master:7180
+            WAIT_HOSTS_TIMEOUT: 360
+            WAIT_SLEEP_INTERVAL: 5
+            WORKER_COUNT: @WORKER
+        volumes:
+            - ./id_rsa.pub:/id_rsa.pub:ro
+            - /sys/fs/cgroup:/sys/fs/cgroup:ro
+        privileged: true
+        depends_on:
+            - master
+        restart: always
+<<<<
+
+networks:
+    intranet:
+        name: cluster-network
+
