@@ -7,6 +7,9 @@ get_ip() {
     host $1 | awk '{print $4;exit;}'
 }
 
+ntpdate -s time.nist.gov
+systemctl start ntpd
+
 echo "-- Initialize worker --"
 if [ -f "/id_rsa.pub" ]; then
     cat /id_rsa.pub >/root/.ssh/authorized_keys
