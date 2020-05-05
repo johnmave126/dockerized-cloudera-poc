@@ -30,6 +30,7 @@ gen_ssh()
 gen_docker_compose()
 {
    echo 'Generate docker-compose.yml' 
+   mkdir shared
 
    HEADER=$(sed -e '/>>>>/Q' docker-compose.yml.template)
    WORKER_TEMPLATE=$(sed -n -e '/>>>>/,/<<<</{//!p;}' docker-compose.yml.template)
