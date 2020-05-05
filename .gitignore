@@ -1,4 +1,5 @@
-docker-compose.yml
-id_rsa
-id_rsa.pub
-mysql.env
+/docker-compose.yml
+/id_rsa
+/id_rsa.pub
+/mysql.env
+/shared

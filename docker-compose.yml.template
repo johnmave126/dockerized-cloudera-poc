@@ -44,6 +44,8 @@ services:
         volumes:
             - ./id_rsa.pub:/id_rsa.pub:ro
             - /sys/fs/cgroup:/sys/fs/cgroup:ro
+            - ./shared:/shared
+        working_dir: /shared
         privileged: true
         depends_on:
             - master
